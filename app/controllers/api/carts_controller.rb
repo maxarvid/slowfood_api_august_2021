@@ -11,10 +11,12 @@ class Api::CartsController < ApplicationController
 
   def update
     cart = Cart.find(params["id"])
-    binding.pry
-    params[:finalized] && render_response(cart, "some message", 200) and return
-    new_product = Product.find(params["product_id"])
-    cart.cart_products.create(product_id: new_product.id)
+    if params[:finalized]
+      cart.update(finalized: params[:finalized])
+      render_response(cart, "Your order is ready for pickup at 21:00 PM", 200) and return
+    end
+    product = Product.find(params["product_id"])
+    cart.cart_products.create(product_id: product.id)
     render_response(cart, "#{product.name} was added to your cart!", 200)
   end
 
