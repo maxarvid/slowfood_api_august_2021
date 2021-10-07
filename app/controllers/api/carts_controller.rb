@@ -6,14 +6,19 @@ class Api::CartsController < ApplicationController
     product = Product.find(params['product_id'])
     cart = current_user.carts.create
     cart.cart_products.create(product_id: product.id)
-    render_response(cart, product, 201)
+    render_response(cart, "#{product.name} was added to your cart!", 201)
   end
 
   def update
+    cart = Cart.find(params[:id])
+    if params[:finalized]
+      cart.update(finalized: params[:finalized])
+      render_response(cart, 'Your order in ready for pick-up at 12:00 PM', 200) and return
+    end
     new_product = Product.find(params['product_id'])
     cart = Cart.find(params['id'])
     cart.cart_products.create(product_id: new_product.id)
-    render_response(cart, new_product, 200)
+    render_response(cart, "#{product.name} was added to your cart!", 200)
   end
 
   private
@@ -22,9 +27,9 @@ class Api::CartsController < ApplicationController
     render json: { message: 'Product not found!' }, status: 422
   end
 
-  def render_response(cart, product, status)
+  def render_response(cart, message, status)
     render json: {
-      message: "#{product.name} was added to your cart!",
+      message: message,
       cart: {
         id: cart.id,
         products: cart.products
