@@ -3,32 +3,34 @@ class Api::CartsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :custom_error
 
   def create
-    product = Product.find(params['product_id'])
+    product = Product.find(params["product_id"])
     cart = current_user.carts.create
     cart.cart_products.create(product_id: product.id)
-    render_response(cart, product, 201)
+    render_response(cart, "#{product.name} was added to your cart!", 201)
   end
 
   def update
-    new_product = Product.find(params['product_id'])
-    cart = Cart.find(params['id'])
+    cart = Cart.find(params["id"])
+    binding.pry
+    params[:finalized] && render_response(cart, "some message", 200) and return
+    new_product = Product.find(params["product_id"])
     cart.cart_products.create(product_id: new_product.id)
-    render_response(cart, new_product, 200)
+    render_response(cart, "#{product.name} was added to your cart!", 200)
   end
 
   private
 
   def custom_error
-    render json: { message: 'Product not found!' }, status: 422
+    render json: { message: "Product not found!" }, status: 422
   end
 
-  def render_response(cart, product, status)
+  def render_response(cart, message, status)
     render json: {
-      message: "#{product.name} was added to your cart!",
+      message: message,
       cart: {
         id: cart.id,
-        products: cart.products
-      }
+        products: cart.products,
+      },
     }, status: status
   end
 end
