@@ -8,6 +8,7 @@ RSpec.describe "PUT /api/carts/:id", type: :request do
 
   describe "the request includes a valid cart id" do
     before do
+      Timecop.freeze(Time.local(2021, 9, 1, 22, 30, 0))
       put "/api/carts/#{cart.id}",
           params: {
             finalized: true,
@@ -23,8 +24,9 @@ RSpec.describe "PUT /api/carts/:id", type: :request do
     end
 
     it "is expected to include delivery time message" do
-      # arrange that time at request is 20.30 PM
-      expect(response_json["message"]).to eq "Your order is ready for pickup at 21:00 PM"
+      expect(response_json["message"]).to eq "Your order is ready for pickup at 21:00"
     end
+
+
   end
 end
