@@ -24,3 +24,5 @@ coverage/
 Gemfile.lock
 
 .rufo
+
+.vscode/settings.json
