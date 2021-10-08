@@ -7,7 +7,7 @@ RSpec.describe 'POST /api/carts', type: :request do
     before do
       post '/api/carts',
            params: {
-             product_id: product.id
+             product_id: product.id,
            },
            headers: auth_headers
     end
@@ -27,13 +27,17 @@ RSpec.describe 'POST /api/carts', type: :request do
     it 'is expected to return an array of items' do
       expect(response_json['cart']['products'].count).to eq 1
     end
+
+    it 'is expected to include finalized key with a value "false"' do
+      expect(response_json['cart']).to have_key('finalized').and have_value(false)
+    end
   end
 
   describe 'unauthorized user can not create cart ' do
     before do
       post '/api/carts',
            params: {
-             product_id: product.id
+             product_id: product.id,
            },
            headers: {}
     end
@@ -49,11 +53,13 @@ RSpec.describe 'POST /api/carts', type: :request do
     before do
       post '/api/carts',
            params: {
-             product_id: 999
+             product_id: 999,
            },
            headers: auth_headers
     end
+
     it { is_expected.to have_http_status 422 }
+
     it 'is expected to show error message:' do
       expect(response_json['message']).to eq 'We could not process your request.'
     end

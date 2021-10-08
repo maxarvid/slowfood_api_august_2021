@@ -11,7 +11,7 @@ RSpec.describe 'PUT /api/carts/:id', type: :request do
       Timecop.freeze(Time.local(2021, 9, 1, 20, 30, 0))
       put "/api/carts/#{cart.id}",
           params: {
-            finalized: true
+            finalized: true,
           },
           headers: auth_headers
     end
@@ -25,6 +25,10 @@ RSpec.describe 'PUT /api/carts/:id', type: :request do
     it 'is expected to include delivery time message' do
       expect(response_json['message']).to eq 'Your order is ready for pickup at 21:00'
     end
+
+    it 'is expected to include finalized key with a value "true"' do
+      expect(response_json['cart']).to have_key('finalized').and have_value(true)
+    end
   end
 
   describe 'the request does not includes a valid cart id' do
@@ -32,7 +36,7 @@ RSpec.describe 'PUT /api/carts/:id', type: :request do
       Timecop.freeze(Time.local(2021, 9, 1, 20, 30, 0))
       put '/api/carts/999',
           params: {
-            finalized: true
+            finalized: true,
           },
           headers: auth_headers
     end
