@@ -1,5 +1,5 @@
 RSpec.describe Cart, type: :model do
-  describe "cart table" do
+  describe 'cart table' do
     it { is_expected.to have_db_column :name }
     it { is_expected.to have_db_column :user_id }
     it {
@@ -8,7 +8,7 @@ RSpec.describe Cart, type: :model do
     }
   end
 
-  describe "associations" do
+  describe 'associations' do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to have_many(:cart_products) }
     it {
@@ -17,13 +17,13 @@ RSpec.describe Cart, type: :model do
     }
   end
 
-  describe "Factory" do
-    it "is expected to be valid" do
+  describe 'Factory' do
+    it 'is expected to be valid' do
       expect(create(:cart)).to be_valid
     end
   end
 
-  describe "instance methods" do
+  describe 'instance methods' do
     it { is_expected.to respond_to :finalized? }
   end
 end
