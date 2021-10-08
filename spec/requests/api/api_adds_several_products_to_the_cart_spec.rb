@@ -54,7 +54,7 @@ RSpec.describe 'PUT /api/carts', type: :request do
     end
     it { is_expected.to have_http_status 422 }
     it 'is expected to show error message:' do
-      expect(response_json['message']).to eq 'Product not found!'
+      expect(response_json['message']).to eq 'We could not process your request.'
     end
   end
 end
