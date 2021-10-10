@@ -4,7 +4,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.5.1'
+ruby '3.0.0'
 
 gem 'bootsnap', '>= 1.2', require: false
 gem 'rails', '~> 6.0.2'
