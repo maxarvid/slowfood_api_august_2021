@@ -16,7 +16,6 @@ gem 'rack-cors', require: 'rack/cors'
 group :development, :test do
   gem 'simplecov', require: false
   gem 'pry-rails'
-  gem 'pry-byebug'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'factory_bot_rails'
@@ -26,4 +25,8 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :test do
+  gem 'timecop'
 end
